@@ -8,6 +8,21 @@ const TaskArea = () => {
         .then(data=> setTasks(data));
     },[])
 
+    const handleDelete =id=>{
+        const proceed = window.confirm('Are you over sure!!');
+        if (proceed) {
+            const url = `http://localhost:5000/task/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const remainig = tasks.filter(task => task._id !== id);
+                    setTasks(remainig);
+                })
+        }
+    }
     
 
     return (
@@ -21,7 +36,7 @@ const TaskArea = () => {
                                 <p>{task.description}</p>
                             </div>
                             <div>
-                                <button className='btn btn-danger'>Delete</button>
+                                <button className='btn btn-danger' onClick={() => handleDelete(task._id)}>Delete</button>
                             </div>
                         </div>    
                     )
